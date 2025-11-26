@@ -1,0 +1,334 @@
+﻿<Window x:Class="HomeVideojuegos.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HomeVideojuegos"
+        mc:Ignorable="d"
+        Title="Game Hub" Height="720" Width="1280"
+        Background="#FF151A2C">
+
+    <Window.Resources>
+
+        <Style x:Key="TopNavButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#C0C0C0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="10,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="#FFFFFF"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SideNavButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#C0C0C0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="Margin" Value="0,2"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FF2A3048"/>
+                    <Setter Property="Foreground" Value="#FFFFFF"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SearchTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Background" Value="#FF2A3048"/>
+            <Setter Property="Foreground" Value="#E0E0E0"/>
+            <Setter Property="BorderBrush" Value="#FF3A4058"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="AcceptsReturn" Value="False"/>
+            <Setter Property="TextWrapping" Value="NoWrap"/>
+            <Setter Property="CaretBrush" Value="#E0E0E0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="3" SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="False"
+                                          HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#FF5A6078"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#FF00C0C0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="IconButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="#C0C0C0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+            <Setter Property="Width" Value="35"/>
+            <Setter Property="Height" Value="35"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="3">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FF2A3048"/>
+                    <Setter Property="Foreground" Value="#FFFFFF"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Nuevo estilo para el botón de Cerrar Sesión: más discreto pero resaltado al pasar el ratón -->
+        <Style x:Key="LogOutButtonStyle" TargetType="Button" BasedOn="{StaticResource TopNavButton}">
+            <Setter Property="Content" Value="Cerrar Sesión"/>
+            <Setter Property="Foreground" Value="#FFC0C0C0"/>
+            <Setter Property="Margin" Value="10,0,0,0"/>
+            <Setter Property="Padding" Value="10,5,10,5"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <!-- Cambia el color a rojo/granate para indicar una acción de salida -->
+                    <Setter Property="Background" Value="#FF5B1F1F"/>
+                    <Setter Property="Foreground" Value="#FFFFFF"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="CallToActionButton" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#FFFFFF"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="0,15,0,0"/>
+            <Setter Property="TextDecorations" Value="None"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect ShadowDepth="0" Color="#FF00C0C0" Opacity="0.9" BlurRadius="5"/>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="#FF00C0C0"/>
+                    <Setter Property="Effect">
+                        <Setter.Value>
+                            <DropShadowEffect ShadowDepth="0" Color="#FFFFFF" Opacity="1.0" BlurRadius="8"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+    </Window.Resources>
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+
+        <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                Background="#FF1A2038"
+                Padding="10,5"
+                BorderThickness="0,0,0,1" BorderBrush="#FF2A3048">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
+
+                <TextBlock Text="GAME HUB"
+                           Foreground="#E0E0E0" FontSize="24" FontWeight="Bold"
+                           VerticalAlignment="Center" Margin="0,0,30,0"/>
+
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,50,0">
+                    <Button Content="HOME" Style="{StaticResource TopNavButton}"/>
+                    <Button Content="GAMES" Style="{StaticResource TopNavButton}"/>
+                    <Button Content="DLC &amp; ADD-ONS" Style="{StaticResource TopNavButton}"/>
+                    <Button Content="NEWS" Style="{StaticResource TopNavButton}"/>
+                    <Button Content="SUPPORT" Style="{StaticResource TopNavButton}"/>
+                </StackPanel>
+
+                <!-- El elemento Grid debe expandirse para empujar el contenido a la derecha -->
+                <Grid HorizontalAlignment="Right" Width="Auto" Margin="20,0,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <!-- Para empujar el contenido de la derecha al extremo -->
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox Text="Search" VerticalAlignment="Center"
+                             Width="200" Height="30" Margin="0,0,10,0"
+                             Grid.Column="0"
+                             Style="{StaticResource SearchTextBoxStyle}"
+                             HorizontalAlignment="Right"/>
+
+                    <StackPanel Orientation="Horizontal" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0">
+                        <Button Content="👤" Style="{StaticResource IconButtonStyle}" ToolTip="User Profile"/>
+                        <Button Content="⚙️" Style="{StaticResource IconButtonStyle}" ToolTip="Settings"/>
+                    </StackPanel>
+
+                    <!-- *** NUEVO BOTÓN DE CERRAR SESIÓN *** -->
+                    <!-- Colocado en la última columna para que se alinee al extremo derecho -->
+                    <Button Grid.Column="2" 
+                            Style="{StaticResource LogOutButtonStyle}"
+                            Click="LogOut_Click"/>
+                    <!-- NOTA: El Content="Cerrar Sesión" ya está definido en el estilo -->
+
+                </Grid>
+            </StackPanel>
+        </Border>
+
+
+        <Border Grid.Row="1" Grid.Column="0"
+                Background="#FF1A2038"
+                Width="180" HorizontalAlignment="Left"
+                BorderThickness="0,0,1,0" BorderBrush="#FF2A3048">
+            <Border.Effect>
+                <DropShadowEffect ShadowDepth="0" Color="#FF00C0C0" Opacity="0.7" BlurRadius="15" Direction="270"/>
+            </Border.Effect>
+            <StackPanel Orientation="Vertical" Margin="0,20,0,0">
+                <Button Content="🎮 LIBRARY" Style="{StaticResource SideNavButton}"/>
+                <Button Content="❤️ WISHLIST" Style="{StaticResource SideNavButton}"/>
+                <Button Content="🛒 CART" Style="{StaticResource SideNavButton}"/>
+
+                <Separator Background="#FF2A3048" Margin="10,15">
+                    <Separator.Effect>
+                        <DropShadowEffect ShadowDepth="0" Color="#FF00C0C0" Opacity="0.7" BlurRadius="10"/>
+                    </Separator.Effect>
+                </Separator>
+
+                <Button Content="⚙️ SETTINGS" Style="{StaticResource SideNavButton}"/>
+            </StackPanel>
+        </Border>
+
+
+        <ScrollViewer Grid.Row="1" Grid.Column="1"
+                      VerticalScrollBarVisibility="Auto"
+                      Padding="20">
+            <StackPanel>
+
+                <TextBlock Text="NEW RELEASES"
+                           Foreground="#E0E0E0" FontSize="20" FontWeight="Bold" Margin="0,0,0,15"/>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,30">
+                    <Border Width="280" Height="160" Background="#FF30385F" CornerRadius="5" Margin="0,0,15,0">
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="4" Direction="180" Color="#FF00C0C0" Opacity="0.8" BlurRadius="8"/>
+                        </Border.Effect>
+                        <Image Source="/HomeVideojuegos;component/Images/EldenRing.jpg" Stretch="Fill"/>
+                    </Border>
+                    <Border Width="280" Height="160" Background="#FF30385F" CornerRadius="5" Margin="0,0,15,0">
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="4" Direction="180" Color="#FF00C0C0" Opacity="0.8" BlurRadius="8"/>
+                        </Border.Effect>
+                        <Image Source="/HomeVideojuegos;component/Images/Cyberpunk2077.jpg" Stretch="Fill"/>
+                    </Border>
+                    <Border Width="280" Height="160" Background="#FF30385F" CornerRadius="5">
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="4" Direction="180" Color="#FF00C0C0" Opacity="0.8" BlurRadius="8"/>
+                        </Border.Effect>
+                        <Image Source="/HomeVideojuegos;component/Images/Zelda.jpg" Stretch="Fill"/>
+                    </Border>
+                </StackPanel>
+
+
+                <TextBlock Text="TOP SELLERS"
+                           Foreground="#E0E0E0" FontSize="20" FontWeight="Bold" Margin="0,0,0,15"/>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,30">
+                    <Border Width="160" Height="90" Background="#FF30385F" CornerRadius="5" Margin="0,0,10,0">
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="2" Direction="180" Color="#FF00C0C0" Opacity="0.7" BlurRadius="5"/>
+                        </Border.Effect>
+                        <Image Source="/HomeVideojuegos;component/Images/Hades.jpg" Stretch="Fill"/>
+                    </Border>
+                    <Border Width="160" Height="90" Background="#FF30385F" CornerRadius="5" Margin="0,0,10,0">
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="2" Direction="180" Color="#FF00C0C0" Opacity="0.7" BlurRadius="5"/>
+                        </Border.Effect>
+                        <Image Source="/HomeVideojuegos;component/Images/GodOfWar.jpg" Stretch="Fill"/>
+                    </Border>
+                    <Border Width="160" Height="90" Background="#FF30385F" CornerRadius="5" Margin="0,0,10,0">
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="2" Direction="180" Color="#FF00C0C0" Opacity="0.7" BlurRadius="5"/>
+                        </Border.Effect>
+                        <Image Source="/HomeVideojuegos;component/Images/ResidentEvil.jpg" Stretch="Fill"/>
+                    </Border>
+                    <Border Width="160" Height="90" Background="#FF30385F" CornerRadius="5" Margin="0,0,10,0">
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="2" Direction="180" Color="#FF00C0C0" Opacity="0.7" BlurRadius="5"/>
+                        </Border.Effect>
+                        <Image Source="/HomeVideojuegos;component/Images/GTA5.jpg" Stretch="Fill"/>
+                    </Border>
+                    <Border Width="160" Height="90" Background="#FF30385F" CornerRadius="5">
+                        <Border.Effect>
+                            <DropShadowEffect ShadowDepth="2" Direction="180" Color="#FF00C0C0" Opacity="0.7" BlurRadius="5"/>
+                        </Border.Effect>
+                        <Image Source="/HomeVideojuegos;component/Images/Minecraft.jpg" Stretch="Fill"/>
+                    </Border>
+
+                </StackPanel>
+
+                <TextBlock Text="EXPLORE ALL GAMES"
+                           Style="{StaticResource CallToActionButton}"/>
+
+            </StackPanel>
+        </ScrollViewer>
+
+    </Grid>
+</Window>

@@ -1,0 +1,218 @@
+﻿<Window x:Class="HomeVideojuegos.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HomeVideojuegos"
+        mc:Ignorable="d"
+        Title="Game Hub Login" Height="450" Width="380"
+        Background="#FF151A2C"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
+
+    <Window.Resources>
+
+        <!-- 1. Estilo Base para Control. TargetType="Control" es la base. -->
+        <Style x:Key="InputBaseStyle" TargetType="Control">
+            <Setter Property="Background" Value="#FF2A3048"/>
+            <Setter Property="Foreground" Value="#E0E0E0"/>
+            <Setter Property="BorderBrush" Value="#FF3A4058"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="5"/>
+        </Style>
+
+        <!-- 2. Estilo para TextBox (Correcto) -->
+        <Style x:Key="LoginTextBoxStyle" TargetType="{x:Type TextBox}" BasedOn="{StaticResource InputBaseStyle}">
+            <Setter Property="CaretBrush" Value="#E0E0E0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="3" SnapsToDevicePixels="True">
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="False"
+                                          HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#FF5A6078"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#FF00C0C0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- 3. Estilo para PasswordBox (CORREGIDO: Se usa PART_ContentHost) -->
+        <Style x:Key="LoginPasswordBoxStyle" TargetType="{x:Type PasswordBox}" BasedOn="{StaticResource InputBaseStyle}">
+            <Setter Property="CaretBrush" Value="#E0E0E0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type PasswordBox}">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="3" SnapsToDevicePixels="True">
+
+                            <!-- ESTE ES EL CAMBIO CLAVE: Se requiere PART_ContentHost 
+                                 para que el PasswordBox sepa dónde mostrar los caracteres enmascarados 
+                                 y acepte la entrada del teclado. -->
+                            <ScrollViewer x:Name="PART_ContentHost" Focusable="False" 
+                                          HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#FF5A6078"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#FF00C0C0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Estilo Común para Botones de Login/Registro (Sin Cambios) -->
+        <Style x:Key="LoginButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FF00C0C0"/>
+            <Setter Property="Foreground" Value="#151A2C"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="5,10,5,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="3">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" TargetName="border" Value="#FF30F0F0"/>
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect Color="#FF00C0C0" ShadowDepth="0" BlurRadius="10" Opacity="0.8"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" TargetName="border" Value="#FF008080"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Estilo de Botón de Salida (Rojo/Peligro) (Sin Cambios) -->
+        <Style x:Key="ExitButtonStyle" TargetType="Button" BasedOn="{StaticResource LoginButtonStyle}">
+            <Setter Property="Background" Value="#FF802020"/>
+            <Setter Property="Foreground" Value="#E0E0E0"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFB03030"/>
+                    <Setter Property="Effect">
+                        <Setter.Value>
+                            <DropShadowEffect Color="#FFB03030" ShadowDepth="0" BlurRadius="10" Opacity="0.8"/>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="#FF501010"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+    </Window.Resources>
+
+    <!-- El resto del StackPanel y Controles (Sin Cambios) -->
+    <Border Background="#FF1A2038"
+            CornerRadius="10"
+            Padding="30"
+            Margin="50,0,50,0"
+            VerticalAlignment="Center" Height="359">
+        <Border.Effect>
+            <DropShadowEffect ShadowDepth="0" Color="#FF00C0C0" Opacity="0.8" BlurRadius="15"/>
+        </Border.Effect>
+
+        <StackPanel>
+            <TextBlock Text="GAME HUB"
+                       Foreground="#E0E0E0"
+                       FontSize="28"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,5"/>
+            <TextBlock Text="ACCESO AL CATÁLOGO"
+                       Foreground="#C0C0C0"
+                       FontSize="14"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,20"/>
+
+            <!-- Usuario -->
+            <TextBlock Text="Usuario:"
+                       Foreground="#C0C0C0"
+                       Margin="0,0,0,5"/>
+            <!-- TxtUser mantiene el nombre original -->
+            <TextBox x:Name="TxtUser"
+                     Text="admin"
+                     Height="30"
+                     Style="{StaticResource LoginTextBoxStyle}"
+                     Margin="0,0,0,15"/>
+
+            <!-- Contraseña -->
+            <TextBlock Text="Contraseña:"
+                       Foreground="#C0C0C0"
+                       Margin="0,0,0,5"/>
+            <!-- TxtPass mantiene el nombre original -->
+            <PasswordBox x:Name="TxtPass"
+                         Height="30"
+                         Style="{StaticResource LoginPasswordBoxStyle}"
+                         Margin="0,0,0,10"/>
+
+            <!-- CAMPO PARA MOSTRAR MENSAJE DE ERROR -->
+            <TextBlock x:Name="TxtError"
+                       Text=""
+                       Foreground="#FFC05050"
+                       HorizontalAlignment="Center"
+                       FontWeight="Bold"
+                       Margin="0,5,0,5"
+                       Height="16"/>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="35">
+                <!-- Botón de Iniciar Sesión -->
+                <Button Content="LOGIN"
+                        Style="{StaticResource LoginButtonStyle}"
+                        Click="Login_Click"
+                        Width="100"/>
+
+                <Button Content="NUEVO"
+                        Style="{StaticResource LoginButtonStyle}"
+                        Click="NewUser_Click"
+                        Width="100"/>
+            </StackPanel>
+
+            <!-- Botón de Salir (cierra la aplicación) -->
+            <Button Content="SALIR "
+                    Style="{StaticResource ExitButtonStyle}"
+                    Click="Exit_Click"
+                    Margin="0,5,0,0"
+                    Width="220" Height="26"/>
+
+        </StackPanel>
+    </Border>
+</Window>
