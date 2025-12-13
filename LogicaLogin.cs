@@ -1,85 +1,121 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
+﻿using MySql.Data.MySqlClient;
 using System.Collections.Generic;
+using System.Data;
+using System.Windows; // Necesario para MessageBox
 
-// El namespace debe coincidir con el definido en tu archivo XAML
 namespace HomeVideojuegos
 {
-    // Es crucial que esta clase sea 'partial' y se llame 'LoginWindow'
-    // para que se vincule con el archivo LoginWindow.xaml.
-    public partial class LoginWindow : Window
+    // Clase simple para contener el usuario (debe existir en el namespace)
+    public class Usuario
     {
-        // 1. DICCIONARIO DE USUARIOS VÁLIDOS (Usuario, Contraseña)
-        private readonly Dictionary<string, string> validUsers = new Dictionary<string, string>
-        {
-            {"admin", "admin1234"}, // Usuario admin con la contraseña requerida
-            {"test", "pass"},
-            // Añade aquí cualquier otro usuario: {"usuario", "contraseña"}
-        };
+        public string NombreUsuario { get; set; }
+        public string Contrasena { get; set; }
+    }
 
-        // Constructor necesario para inicializar la ventana y sus componentes XAML.
-        public LoginWindow()
-        {
-            InitializeComponent();
+    public class LogicalLogin
+    {
+        // 1. CADENA DE CONEXIÓN PURA (Usando SslMode=0 para compatibilidad máxima con MySql.Data)
+        // Por favor, prueba ESTA cadena de conexión:
+        private const string ConnectionString =
+            "Server=localhost;Port=3306;Database=home_videojuegos_db;Uid=root;Pwd=301206;SslMode=0;";
 
-            // Asegurarse de que el campo de error (TxtError) esté limpio al inicio
-            if (TxtError != null)
+        // Si la anterior con SslMode=0 falla, regresa a la versión None:
+        // private const string ConnectionString =
+        //    "Server=localhost;Port=3306;Database=home_videojuegos_db;Uid=root;Pwd=301206;SslMode=None;";
+
+
+        public Dictionary<string, string> ValidUsers { get; private set; } = new Dictionary<string, string>();
+
+        public LogicalLogin()
+        {
+            LoadUsersFromDatabase();
+        }
+
+        private void LoadUsersFromDatabase()
+        {
+            ValidUsers.Clear();
+
+            // Usamos la conexión pura de MySql.Data
+            using (var connection = new MySqlConnection(ConnectionString))
             {
-                TxtError.Text = string.Empty;
+                try
+                {
+                    connection.Open();
+                    string query = "SELECT NombreUsuario, Contrasena FROM usuarios";
+
+                    using (var command = new MySqlCommand(query, connection))
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string user = reader.GetString("NombreUsuario");
+                            string pass = reader.GetString("Contrasena");
+                            ValidUsers[user] = pass;
+                        }
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    // Manejar errores específicos de la base de datos (Ej: Conexión denegada)
+                    MessageBox.Show($"Error al conectar o leer la base de datos: {ex.Message}", "Error Crítico de BD");
+                    // Opcional: Agregar usuarios de prueba si falla la conexión
+                    // ValidUsers["admin"] = "admin1234";
+                }
+                catch (System.Exception ex)
+                {
+                    // Manejar otros errores
+                    MessageBox.Show($"Error general al cargar usuarios: {ex.Message}", "Error");
+                }
             }
         }
 
-        // Manejador de evento vinculado al botón LOGIN en el XAML
-        private void Login_Click(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// Intenta registrar un nuevo usuario en la base de datos.
+        /// Retorna null si es exitoso, o un mensaje de error si falla.
+        /// </summary>
+        public string TryRegisterUser(string newUser, string newPass, string confirmPass)
         {
-            // 1. Obtener credenciales
-            string user = TxtUser.Text.Trim();
-            string pass = TxtPass.Password;
-
-            // Limpiar mensaje de error previo antes de la validación
-            TxtError.Text = string.Empty;
-
-            // 2. VALIDACIÓN DE CAMPOS VACÍOS
-            if (string.IsNullOrWhiteSpace(user) || string.IsNullOrWhiteSpace(pass))
+            // --- 1. Validaciones en memoria ---
+            if (string.IsNullOrWhiteSpace(newUser) || string.IsNullOrWhiteSpace(newPass) || string.IsNullOrWhiteSpace(confirmPass))
             {
-                TxtError.Text = "Error: Debe introducir Usuario y Contraseña.";
-                TxtError.Foreground = Brushes.Red;
-                return;
+                return "Todos los campos son obligatorios.";
             }
 
-            // 3. VALIDACIÓN USANDO EL DICCIONARIO
-            // Verifica si el usuario existe Y si la contraseña coincide
-            if (validUsers.TryGetValue(user, out string storedPassword) && storedPassword == pass)
+            if (newPass != confirmPass)
             {
-                // Inicia sesión exitosa
-                TxtError.Text = $"¡Bienvenido, {user}! Acceso concedido.";
-                TxtError.Foreground = Brushes.LightGreen;
-
-                // *** LÓGICA DE NAVEGACIÓN EXITOSA (CORREGIDA) ***
-                // Abre la ventana principal (MainWindow)
-                MainWindow mainWindow = new MainWindow();
-                mainWindow.Show();
-                this.Close(); // Cierra la ventana de login
+                return "Las contraseñas no coinciden.";
             }
-            else
+
+            if (ValidUsers.ContainsKey(newUser))
             {
-                // Credenciales incorrectas
-                TxtError.Text = "Error: Usuario o Contraseña incorrectos.";
-                TxtError.Foreground = Brushes.Red;
+                return $"El usuario '{newUser}' ya está registrado.";
             }
-        }
 
-        // Manejador de evento vinculado al botón NUEVO en el XAML
-        private void NewUser_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Funcionalidad de registro de nuevo usuario aún no implementada.", "Nuevo Usuario", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
+            // --- 2. Inserción en la base de datos ---
+            using (var connection = new MySqlConnection(ConnectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "INSERT INTO usuarios (NombreUsuario, Contrasena) VALUES (@User, @Pass)";
 
-        // Manejador de evento vinculado al botón SALIR en el XAML
-        private void Exit_Click(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
+                    using (var command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@User", newUser);
+                        command.Parameters.AddWithValue("@Pass", newPass);
+                        command.ExecuteNonQuery();
+                    }
+
+                    // Actualizar el diccionario en memoria después del éxito en BD
+                    ValidUsers[newUser] = newPass;
+                    return null; // Registro exitoso
+                }
+                catch (MySqlException ex)
+                {
+                    // Manejar errores de SQL durante la inserción
+                    return $"Error al insertar el usuario en BD: {ex.Message}";
+                }
+            }
         }
     }
 }
