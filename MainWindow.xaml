@@ -1,502 +1,102 @@
 ﻿<Window x:Class="HomeVideojuegos.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/a2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:HomeVideojuegos"
-        mc:Ignorable="d"
-        Title="Game Hub" Height="720" Width="1799"
-        Background="#FF151A2C">
+        Title="Game Hub" Height="750" Width="1150"
+        Background="#0B0E14" WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
-        <Style x:Key="TopNavButton" TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="#C0C0C0"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="10,5"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Margin" Value="10,0"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Foreground" Value="#FFFFFF"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style x:Key="SideNavButton" TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="#C0C0C0"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="HorizontalContentAlignment" Value="Left"/>
-            <Setter Property="Padding" Value="20,10"/>
-            <Setter Property="FontSize" Value="16"/>
-            <Setter Property="Margin" Value="0,2"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#FF2A3048"/>
-                    <Setter Property="Foreground" Value="#FFFFFF"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style x:Key="SideNavButtonActive" TargetType="Button" BasedOn="{StaticResource SideNavButton}">
-            <Setter Property="Background" Value="#FF2A3048"/>
-            <Setter Property="Foreground" Value="#FFFFFF"/>
-            <Setter Property="BorderThickness" Value="3,0,0,0"/>
-            <Setter Property="BorderBrush" Value="#FF00C0C0"/>
-            <Setter Property="Effect">
-                <Setter.Value>
-                    <DropShadowEffect ShadowDepth="0" Color="#FF00C0C0" Opacity="1.0" BlurRadius="5" Direction="0"/>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#FF2A3048"/>
-                    <Setter Property="Foreground" Value="#FFFFFF"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style x:Key="SearchTextBoxStyle" TargetType="TextBox">
-            <Setter Property="Background" Value="#FF2A3048"/>
-            <Setter Property="Foreground" Value="#E0E0E0"/>
-            <Setter Property="BorderBrush" Value="#FF3A4058"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="5"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="AcceptsReturn" Value="False"/>
-            <Setter Property="TextWrapping" Value="NoWrap"/>
-            <Setter Property="CaretBrush" Value="#E0E0E0"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type TextBox}">
-                        <Border x:Name="border"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="3" SnapsToDevicePixels="True">
-                            <ScrollViewer x:Name="PART_ContentHost" Focusable="False"
-                                          HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="BorderBrush" Value="#FF5A6078"/>
-                            </Trigger>
-                            <Trigger Property="IsKeyboardFocused" Value="True">
-                                <Setter TargetName="border" Property="BorderBrush" Value="#FF00C0C0"/>
-                                <Setter TargetName="border" Property="Effect">
-                                    <Setter.Value>
-                                        <DropShadowEffect ShadowDepth="0" Color="#FF00C0C0" Opacity="1.0" BlurRadius="8"/>
-                                    </Setter.Value>
-                                </Setter>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="IconButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="#C0C0C0"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="5"/>
-            <Setter Property="FontSize" Value="20"/>
-            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
-            <Setter Property="Width" Value="35"/>
-            <Setter Property="Height" Value="35"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="3">
-                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#FF2A3048"/>
-                    <Setter Property="Foreground" Value="#FFFFFF"/>
-                    <Setter Property="Effect">
-                        <Setter.Value>
-                            <DropShadowEffect ShadowDepth="0" Color="#FF00C0C0" Opacity="0.5" BlurRadius="5"/>
-                        </Setter.Value>
-                    </Setter>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style x:Key="ImageContainerStyle" TargetType="Border">
-            <Setter Property="CornerRadius" Value="5"/>
-            <Setter Property="Background" Value="#FF30385F"/>
+        <Style x:Key="GameCardStyle" TargetType="Border">
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
             <Setter Property="RenderTransform">
                 <Setter.Value>
-                    <ScaleTransform ScaleX="1.0" ScaleY="1.0"/>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
-            <Setter Property="SnapsToDevicePixels" Value="True"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Effect">
-                <Setter.Value>
-                    <DropShadowEffect ShadowDepth="4" Direction="180" Color="#FF00C0C0" Opacity="0.6" BlurRadius="6"/>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
                 </Setter.Value>
             </Setter>
             <Style.Triggers>
                 <EventTrigger RoutedEvent="MouseEnter">
                     <BeginStoryboard>
                         <Storyboard>
-                            <DoubleAnimation Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleX)" To="1.05" Duration="0:0:0.2"/>
-                            <DoubleAnimation Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleY)" To="1.05" Duration="0:0:0.2"/>
-                            <DoubleAnimation Storyboard.TargetProperty="(Effect).(DropShadowEffect.BlurRadius)" To="10" Duration="0:0:0.2"/>
-                            <DoubleAnimation Storyboard.TargetProperty="(Effect).(DropShadowEffect.Opacity)" To="1.0" Duration="0:0:0.2"/>
+                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="1.04" Duration="0:0:0.2"/>
+                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="1.04" Duration="0:0:0.2"/>
                         </Storyboard>
                     </BeginStoryboard>
                 </EventTrigger>
                 <EventTrigger RoutedEvent="MouseLeave">
                     <BeginStoryboard>
                         <Storyboard>
-                            <DoubleAnimation Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleX)" To="1.0" Duration="0:0:0.2"/>
-                            <DoubleAnimation Storyboard.TargetProperty="(RenderTransform).(ScaleTransform.ScaleY)" To="1.0" Duration="0:0:0.2"/>
-                            <DoubleAnimation Storyboard.TargetProperty="(Effect).(DropShadowEffect.BlurRadius)" To="6" Duration="0:0:0.2"/>
-                            <DoubleAnimation Storyboard.TargetProperty="(Effect).(DropShadowEffect.Opacity)" To="0.6" Duration="0:0:0.2"/>
+                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="1" Duration="0:0:0.2"/>
+                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="1" Duration="0:0:0.2"/>
                         </Storyboard>
                     </BeginStoryboard>
                 </EventTrigger>
             </Style.Triggers>
         </Style>
-
-        <Style x:Key="LogOutButtonStyle" TargetType="Button" BasedOn="{StaticResource TopNavButton}">
-            <Setter Property="Content" Value="Cerrar Sesión"/>
-            <Setter Property="Foreground" Value="#FFC0C0C0"/>
-            <Setter Property="Margin" Value="10,0,0,0"/>
-            <Setter Property="Padding" Value="10,5,10,5"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#FF5B1F1F"/>
-                    <Setter Property="Foreground" Value="#FFFFFF"/>
-                    <Setter Property="Effect">
-                        <Setter.Value>
-                            <DropShadowEffect ShadowDepth="0" Color="#FFC00000" Opacity="1.0" BlurRadius="8"/>
-                        </Setter.Value>
-                    </Setter>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style x:Key="CallToActionButton" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="#FFFFFF"/>
-            <Setter Property="FontSize" Value="20"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Margin" Value="0,15,0,0"/>
-            <Setter Property="TextDecorations" Value="None"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Effect">
-                <Setter.Value>
-                    <DropShadowEffect ShadowDepth="0" Color="#FF00C0C0" Opacity="0.9" BlurRadius="5"/>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Foreground" Value="#FF00C0C0"/>
-                    <Setter Property="Effect">
-                        <Setter.Value>
-                            <DropShadowEffect ShadowDepth="0" Color="#FFFFFF" Opacity="1.0" BlurRadius="8"/>
-                        </Setter.Value>
-                    </Setter>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <Style x:Key="ArrowButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="#FF00C0C0"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="5"/>
-            <Setter Property="FontSize" Value="30"/>
-            <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border x:Name="ArrowBorder"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="3"
-                                Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="ArrowBorder" Property="Background" Value="#AA2A3048"/>
-                                <Setter TargetName="ArrowBorder" Property="BorderBrush" Value="#FF00C0C0"/>
-                                <Setter TargetName="ArrowBorder" Property="BorderThickness" Value="1"/>
-                                <Setter TargetName="ArrowBorder" Property="Effect">
-                                    <Setter.Value>
-                                        <DropShadowEffect ShadowDepth="0" Color="#FF00C0C0" Opacity="0.5" BlurRadius="5"/>
-                                    </Setter.Value>
-                                </Setter>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
     </Window.Resources>
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="180"/>
+            <ColumnDefinition Width="240"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
-                Background="#FF1A2038"
-                Padding="10,5"
-                BorderThickness="0,0,0,1" BorderBrush="#FF2A3048">
+        <Border Background="#10131C" BorderBrush="#1E2330" BorderThickness="0,0,1,0">
+            <StackPanel Margin="25">
+                <TextBlock Text="GAME HUB" Foreground="#00D1D1" FontSize="24" FontWeight="Black" Margin="0,0,0,50">
+                    <TextBlock.Effect>
+                        <DropShadowEffect BlurRadius="15" Color="#00D1D1" Opacity="0.4" ShadowDepth="0"/>
+                    </TextBlock.Effect>
+                </TextBlock>
 
-            <DockPanel LastChildFill="True">
-                <TextBlock Text="GAME HUB"
-                           DockPanel.Dock="Left"
-                           Foreground="#E0E0E0" FontSize="24" FontWeight="Bold"
-                           VerticalAlignment="Center" Margin="0,0,30,0"/>
+                <Button Content="🏠 Explorar" Click="BtnExplorar_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Foreground="White" FontSize="16" Margin="0,10" Cursor="Hand" HorizontalAlignment="Left"/>
+                <Button Content="📚 Biblioteca" Click="BtnBiblioteca_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Foreground="#9BA1AD" FontSize="16" Margin="0,10" Cursor="Hand" HorizontalAlignment="Left"/>
+                <Button Content="🛒 Mi Carrito" Click="BtnCarrito_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Foreground="#9BA1AD" FontSize="16" Margin="0,10" Cursor="Hand" HorizontalAlignment="Left"/>
+                <Button Content="❤ Lista Deseos" Click="BtnWishlist_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Foreground="#9BA1AD" FontSize="16" Margin="0,10" Cursor="Hand" HorizontalAlignment="Left"/>
+            </StackPanel>
+        </Border>
 
-                <Grid DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
+        <Grid Grid.Column="1" Margin="35,25">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-                    <TextBox Text="Search" VerticalAlignment="Center"
-                             Width="200" Height="30" Margin="0,0,10,0"
-                             Grid.Column="0"
-                             Style="{StaticResource SearchTextBoxStyle}"
-                             HorizontalAlignment="Right"/>
+            <DockPanel LastChildFill="False" Margin="0,0,0,30">
+                <Border DockPanel.Dock="Left" Background="#1C212E" CornerRadius="12" Width="350" Padding="15,8">
+                    <Grid>
+                        <TextBlock Text="Buscar juegos..." Foreground="#5C6378" VerticalAlignment="Center" Margin="5,0" IsHitTestVisible="False">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Text, ElementName=TxtBusqueda}" Value="">
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <TextBox x:Name="TxtBusqueda" Background="Transparent" BorderThickness="0" Foreground="White" FontSize="14" VerticalAlignment="Center" TextChanged="TxtBusqueda_TextChanged"/>
+                    </Grid>
+                </Border>
 
-                    <StackPanel Orientation="Horizontal" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0">
-                        <Button Content="&#xE77B;" Style="{StaticResource IconButtonStyle}" ToolTip="User Profile"/>
-                        <Button Content="&#xE713;" Style="{StaticResource IconButtonStyle}" ToolTip="Settings"/>
-                    </StackPanel>
-
-                    <TextBlock x:Name="TxtUsernameDisplay" 
-                               Text="Pedro" 
-                               Foreground="#E0E0E0" 
-                               VerticalAlignment="Center" 
-                               FontSize="14"
-                               FontWeight="SemiBold"
-                               Margin="0,0,10,0"
-                               Grid.Column="2"/>
-
-                    <Button Grid.Column="3" 
-                            Style="{StaticResource LogOutButtonStyle}"
-                            Click="LogOut_Click"/>
-                </Grid>
-
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <Button Content="HOME" Style="{StaticResource TopNavButton}" Click="TopNavButton_Click"/>
-                    <Button Content="GAMES" Style="{StaticResource TopNavButton}" Click="TopNavButton_Click"/>
-                    <Button Content="DLC &amp; ADD-ONS" Style="{StaticResource TopNavButton}" Click="TopNavButton_Click"/>
-                    <Button Content="NEWS" Style="{StaticResource TopNavButton}" Click="TopNavButton_Click"/>
-                    <Button Content="SUPPORT" Style="{StaticResource TopNavButton}" Click="TopNavButton_Click"/>
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock x:Name="TxtBienvenida" Text="Hola, Usuario" Foreground="White" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,20,0"/>
+                    <Button Content="Cerrar Sesión" Click="Logout_Click" Background="#2D1414" Foreground="#FF5555" FontWeight="Bold" Padding="15,8" Cursor="Hand">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="10"/>
+                            </Style>
+                        </Button.Resources>
+                        <Button.Effect>
+                            <DropShadowEffect BlurRadius="10" Color="#FF5555" Opacity="0.3" ShadowDepth="0"/>
+                        </Button.Effect>
+                    </Button>
                 </StackPanel>
             </DockPanel>
 
-        </Border>
-
-        <Border Grid.Row="1" Grid.Column="0"
-                Background="#FF1A2038"
-                HorizontalAlignment="Stretch"
-                BorderThickness="0,0,1,0" BorderBrush="#FF2A3048">
-            <Border.Effect>
-                <DropShadowEffect ShadowDepth="0" Color="#FF00C0C0" Opacity="0.9" BlurRadius="20" Direction="270"/>
-            </Border.Effect>
-            <StackPanel Orientation="Vertical" Margin="0,20,0,0">
-                <Button Content="🎮 LIBRARY" Style="{StaticResource SideNavButtonActive}" Click="LibraryButton_Click"/>
-                <Button Content="❤️ WISHLIST" Style="{StaticResource SideNavButton}" Click="WishlistButton_Click"/>
-                <Button Content="🛒 CART" Style="{StaticResource SideNavButton}" Click="CartButton_Click"/>
-
-                <Separator Background="#FF2A3048" Margin="10,15">
-                    <Separator.Effect>
-                        <DropShadowEffect ShadowDepth="0" Color="#FF00C0C0" Opacity="1.0" BlurRadius="12"/>
-                    </Separator.Effect>
-                </Separator>
-
-                <Button Content="⚙️ SETTINGS" Style="{StaticResource SideNavButton}" Click="SettingsButton_Click"/>
-                <Button Content="✉️ SUPPORT" Style="{StaticResource SideNavButton}" Click="TopNavButton_Click"/>
-                <Button Content="❌ EXIT" Style="{StaticResource SideNavButton}" Click="ExitApplication_Click"/>
-            </StackPanel>
-        </Border>
-
-        <ScrollViewer Grid.Row="1" Grid.Column="1"
-                      VerticalScrollBarVisibility="Auto"
-                      Padding="20">
-            <StackPanel>
-
-                <TextBlock Text="NEW RELEASES"
-                           Foreground="#E0E0E0" FontSize="20" FontWeight="Bold" Margin="0,0,0,15"/>
-
-                <WrapPanel Margin="0,0,0,30" HorizontalAlignment="Left">
-                    <Border Width="300" Height="160" Style="{StaticResource ImageContainerStyle}" Margin="0,0,20,20">
-                        <Image Source="/HomeVideojuegos;component/Images/EldenRing.jpg" Stretch="Fill"/>
-                    </Border>
-                    <Border Width="300" Height="160" Style="{StaticResource ImageContainerStyle}" Margin="0,0,20,20">
-                        <Image Source="/HomeVideojuegos;component/Images/Cyberpunk2077.jpg" Stretch="Fill"/>
-                    </Border>
-                    <Border Width="300" Height="160" Style="{StaticResource ImageContainerStyle}" Margin="0,0,20,20">
-                        <Image Source="/HomeVideojuegos;component/Images/Zelda.jpg" Stretch="Fill"/>
-                    </Border>
-                    <Border Width="300" Height="160" Style="{StaticResource ImageContainerStyle}" Margin="0,0,20,20">
-                        <Image Source="/HomeVideojuegos;component/Images/HogwartsLegacy.jpg" Stretch="Fill"/>
-                    </Border>
-                </WrapPanel>
-
-                <TextBlock Text="TOP SELLERS"
-                           Foreground="#E0E0E0" FontSize="20" FontWeight="Bold" Margin="0,0,0,15"/>
-
-                <Grid Margin="0,0,0,30">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-
-                    <Button Grid.Column="0"
-                            x:Name="PreviousButton"
-                            MouseDown="PreviousButton_MouseDown"
-                            MouseUp="NextPreviousButton_MouseUp"
-                            Style="{StaticResource ArrowButtonStyle}"
-                            Content="&#xE0E3;"
-                            ToolTip="Anterior"
-                            VerticalAlignment="Center"
-                            Margin="0,0,5,0"/>
-
-                    <ScrollViewer Grid.Column="1"
-                                  x:Name="TopSellersScrollViewer"
-                                  HorizontalScrollBarVisibility="Hidden"
-                                  VerticalScrollBarVisibility="Disabled"
-                                  Padding="0,0,0,5">
-
-                        <ItemsControl x:Name="TopSellersItemsControl" 
-                                      ItemsSource="{Binding TopSellers}">
-
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left"/>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Width="193" Margin="0,0,15,15" Cursor="Hand">
-                                        <Border Height="110" 
-                                                Style="{StaticResource ImageContainerStyle}">
-                                            <Image Source="{Binding ImagePath}" Stretch="Fill"/>
-                                        </Border>
-
-                                        <TextBlock Text="{Binding Title}" 
-                                                   Foreground="#E0E0E0" 
-                                                   FontSize="12" 
-                                                   FontWeight="Bold"
-                                                   TextTrimming="CharacterEllipsis"
-                                                   Margin="0,5,0,0"/>
-
-                                        <TextBlock Text="{Binding Price}" 
-                                                   Foreground="#00C0C0" 
-                                                   FontSize="14" 
-                                                   FontWeight="SemiBold"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-
-                            <ItemsControl.ItemContainerStyle>
-                                <Style TargetType="ContentPresenter">
-                                    <Setter Property="Opacity" Value="1.0"/>
-                                    <Style.Triggers>
-                                        <EventTrigger RoutedEvent="Loaded">
-                                            <BeginStoryboard>
-                                                <Storyboard>
-                                                    <DoubleAnimation Storyboard.TargetProperty="Opacity" 
-                                                                     From="0.0" To="1.0" 
-                                                                     Duration="0:0:0.5"/>
-                                                </Storyboard>
-                                            </BeginStoryboard>
-                                        </EventTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </ItemsControl.ItemContainerStyle>
-
-                        </ItemsControl>
-
-                    </ScrollViewer>
-
-                    <Button Grid.Column="2"
-                            x:Name="NextButton"
-                            MouseDown="NextButton_MouseDown"
-                            MouseUp="NextPreviousButton_MouseUp"
-                            Style="{StaticResource ArrowButtonStyle}"
-                            Content="&#xE0E2;"
-                            ToolTip="Siguiente"
-                            VerticalAlignment="Center"
-                            Margin="5,0,0,0"/>
-                </Grid>
-
-                <TextBlock Text="EXPLORE ALL GAMES"
-                           Style="{StaticResource CallToActionButton}"
-                           MouseLeftButtonDown="ExploreAllGames_Click"/>
-            </StackPanel>
-        </ScrollViewer>
-
-        <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" 
-                Background="#FF1A2038"
-                BorderThickness="0,1,0,0" BorderBrush="#FF2A3048"
-                Padding="10">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                <TextBlock Text="© 2025 Game Hub"
-                           Foreground="#C0C0C0" FontSize="12" VerticalAlignment="Center" Margin="10,0,0,0"/>
-            </StackPanel>
-        </Border>
-
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
+                <UniformGrid x:Name="ContenedorJuegos" Columns="4" VerticalAlignment="Top"/>
+            </ScrollViewer>
+        </Grid>
     </Grid>
 </Window>
