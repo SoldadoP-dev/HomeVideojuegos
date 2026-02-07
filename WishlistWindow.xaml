@@ -1,0 +1,83 @@
+﻿<Window x:Class="HomeVideojuegos.WishlistWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Deseos" Height="650" Width="900"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        WindowStartupLocation="CenterScreen" MouseLeftButtonDown="Window_MouseLeftButtonDown">
+
+    <Border Background="#0F111A" CornerRadius="25" BorderBrush="#1E2233" BorderThickness="2">
+        <Grid Margin="30">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="0,0,0,25">
+                <StackPanel>
+                    <TextBlock Text="LISTA DE DESEOS" Foreground="White" FontSize="28" FontWeight="Black"/>
+                    <TextBlock Text="Guarda tus favoritos para más tarde" Foreground="#9BA1AD" FontSize="13" Margin="2,2,0,0"/>
+                </StackPanel>
+
+                <Button Content="VOLVER" Click="Volver_Click" HorizontalAlignment="Right" 
+                        Background="#1C2236" Foreground="White" Padding="20,8" Cursor="Hand">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="8"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+            </Grid>
+
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
+                <ItemsControl x:Name="icWishlist">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="#161B2B" CornerRadius="15" Margin="0,0,0,15" Padding="15" 
+                                    BorderBrush="#252B3E" BorderThickness="1">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border CornerRadius="10" ClipToBounds="True" Width="120" Height="68">
+                                        <Image Source="{Binding imagen}" Stretch="UniformToFill"/>
+                                    </Border>
+
+                                    <StackPanel Grid.Column="1" Margin="25,0" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding titulo}" Foreground="White" FontSize="20" FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding precio_formateado}" Foreground="#00D1D1" FontSize="16" FontWeight="SemiBold" Margin="0,5,0,0"/>
+                                    </StackPanel>
+
+                                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                                        <Button Content="🛒 COMPRAR" Tag="{Binding id_juego}" Click="AddFromWishlist_Click" 
+                                                Background="#00D1D1" Foreground="#0F111A" FontWeight="Bold" 
+                                                Padding="18,10" Margin="0,0,12,0" Cursor="Hand">
+                                            <Button.Resources>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="CornerRadius" Value="10"/>
+                                                </Style>
+                                            </Button.Resources>
+                                        </Button>
+
+                                        <Button Content="" FontFamily="Segoe MDL2 Assets" 
+                                                Click="RemoveWishlist_Click" Tag="{Binding id_juego}" 
+                                                Background="#2A1010" Foreground="#FF5555" 
+                                                Width="45" Height="45" Cursor="Hand" FontSize="16">
+                                            <Button.Resources>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="CornerRadius" Value="10"/>
+                                                </Style>
+                                            </Button.Resources>
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+    </Border>
+</Window>

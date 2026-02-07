@@ -178,10 +178,7 @@
                        VerticalAlignment="Center"/>
                 <Rectangle Grid.RowSpan="4" Fill="#B01A2038"/>
 
-                <Image Source="/HomeVideojuegos;component/Images/logo.png"
-                       Width="150" Height="150"
-                       VerticalAlignment="Center"  HorizontalAlignment="Center"
-                       Margin="0,0,0,0" Grid.Row="0"/>
+                
 
                 <TextBlock Text="¡BIENVENIDO!"
                            Foreground="#E0E0E0"
